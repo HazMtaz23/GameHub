@@ -42,18 +42,18 @@
     </script>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white overflow-x-auto">
+<body class="bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 min-h-screen relative">
     <!-- Animated Background -->
-    <div class="fixed inset-0 z-0">
-        <div class="absolute inset-0 bg-gradient-to-br from-neon-blue/10 via-neon-purple/10 to-neon-pink/10 animate-pulse"></div>
-        <div class="absolute top-20 left-10 w-72 h-72 bg-neon-blue/20 rounded-full blur-3xl animate-bounce"></div>
-        <div class="absolute bottom-20 right-10 w-96 h-96 bg-neon-purple/20 rounded-full blur-3xl animate-pulse"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-neon-pink/20 rounded-full blur-3xl animate-spin"></div>
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute -inset-10 opacity-20">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-neon-blue to-neon-purple rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute top-3/4 right-1/4 w-80 h-80 bg-gradient-to-r from-neon-pink to-neon-green rounded-full blur-3xl animate-pulse" style="animation-delay: -3s;"></div>
+        </div>
     </div>
 
     <!-- Header -->
-    <header class="relative z-10 p-4 md:p-6 border-b border-neon-purple/30 backdrop-blur-lg">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <header class="relative z-10 bg-black/30 backdrop-blur-xl border-b border-white/20 p-4">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
             <button onclick="goHome()" class="flex items-center space-x-2 text-neon-blue hover:text-neon-purple transition-all duration-300 group">
                 <svg class="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -61,7 +61,7 @@
                 <span class="font-semibold">Back to GameHub</span>
             </button>
             
-            <h1 class="text-xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink animate-pulse">
+            <h1 class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink animate-pulse">
                 ♠️ Neon Solitaire ♣️
             </h1>
             
@@ -74,30 +74,33 @@
         </div>
     </header>
 
-    <!-- Main Game Section -->
-    <main class="relative z-10 p-4 md:p-6">
-        <div class="max-w-7xl mx-auto">
-            <!-- Game Controls -->
-            <div class="flex flex-wrap items-center justify-center gap-4 mb-6">
-                <button id="newGameBtn" onclick="newGame()" 
-                    class="px-6 py-2 bg-gradient-to-r from-neon-green to-neon-blue text-white font-bold rounded-lg
-                           hover:from-neon-blue hover:to-neon-purple transition-all duration-300 transform hover:scale-105 
-                           shadow-lg shadow-neon-green/50 hover:shadow-neon-blue/50">
-                    🎴 New Game
-                </button>
-                <button id="undoBtn" onclick="undoMove()" 
-                    class="px-6 py-2 bg-gradient-to-r from-neon-orange to-neon-pink text-white font-bold rounded-lg
-                           hover:from-neon-pink hover:to-neon-purple transition-all duration-300 transform hover:scale-105 
-                           shadow-lg shadow-neon-orange/50 hover:shadow-neon-pink/50">
-                    ↶ Undo
-                </button>
-                <button id="hintBtn" onclick="getHint()" 
-                    class="px-6 py-2 bg-gradient-to-r from-neon-purple to-neon-pink text-white font-bold rounded-lg
-                           hover:from-neon-blue hover:to-neon-green transition-all duration-300 transform hover:scale-105 
-                           shadow-lg shadow-neon-purple/50 hover:shadow-neon-green/50">
-                    💡 Hint
-                </button>
-            </div>
+    <!-- Main Game Container with Ad Space -->
+    <main class="relative z-10 p-4 flex flex-col items-center justify-center min-h-[calc(100vh-200px)] px-4 lg:px-24 pb-24">
+        <!-- Game Controls -->
+        <div class="flex flex-wrap items-center justify-center gap-4 mb-6">
+            <button id="newGameBtn" onclick="newGame()" 
+                class="px-4 md:px-6 py-2 bg-gradient-to-r from-neon-green to-neon-blue text-white font-bold rounded-lg
+                       hover:from-neon-blue hover:to-neon-purple transition-all duration-300 transform hover:scale-105 
+                       shadow-lg shadow-neon-green/50 hover:shadow-neon-blue/50 text-sm md:text-base">
+                🎴 New Game
+            </button>
+            <button id="undoBtn" onclick="undoMove()" 
+                class="px-4 md:px-6 py-2 bg-gradient-to-r from-neon-orange to-neon-pink text-white font-bold rounded-lg
+                       hover:from-neon-pink hover:to-neon-purple transition-all duration-300 transform hover:scale-105 
+                       shadow-lg shadow-neon-orange/50 hover:shadow-neon-pink/50 text-sm md:text-base">
+                ↶ Undo
+            </button>
+            <button id="hintBtn" onclick="getHint()" 
+                class="px-4 md:px-6 py-2 bg-gradient-to-r from-neon-purple to-neon-pink text-white font-bold rounded-lg
+                       hover:from-neon-blue hover:to-neon-green transition-all duration-300 transform hover:scale-105 
+                       shadow-lg shadow-neon-purple/50 hover:shadow-neon-green/50 text-sm md:text-base">
+                💡 Hint
+            </button>
+        </div>
+
+        <!-- Game Screen Container -->
+        <div class="bg-black/40 backdrop-blur-xl rounded-2xl border border-white/20 p-4 md:p-6 shadow-2xl relative max-w-6xl w-full min-h-[500px] md:min-h-[600px] overflow-hidden">
+            <!-- Game Board -->
 
             <!-- Game Board -->
             <div class="game-board">
@@ -153,39 +156,74 @@
                     <div class="tableau-pile card-column" id="tableau-6"></div>
                 </div>
             </div>
+
+            <!-- Win Screen - Now contained within game screen -->
+            <div id="winScreen" class="absolute inset-0 bg-black/90 backdrop-blur-md rounded-2xl flex items-center justify-center hidden z-50">
+                <div class="text-center space-y-4 p-6 bg-gradient-to-br from-neon-purple/20 to-neon-pink/20 rounded-xl border border-neon-blue/50 backdrop-blur-lg max-w-md mx-4">
+                    <h2 class="text-2xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-green to-neon-blue animate-pulse">
+                        🎉 You Win! 🎉
+                    </h2>
+                    <div class="text-lg md:text-xl text-neon-blue space-y-2">
+                        <div>Final Score: <span id="finalScore" class="text-neon-green font-bold">0</span></div>
+                        <div>Moves: <span id="finalMoves" class="text-neon-purple font-bold">0</span></div>
+                        <div>Time: <span id="finalTime" class="text-neon-pink font-bold">00:00</span></div>
+                    </div>
+                    <div class="flex flex-wrap gap-3 justify-center">
+                        <button onclick="newGame(); hideWinScreen()" 
+                            class="px-6 py-3 bg-gradient-to-r from-neon-green to-neon-blue text-white font-bold rounded-lg
+                                   hover:from-neon-blue hover:to-neon-purple transition-all duration-300 transform hover:scale-110 
+                                   shadow-lg shadow-neon-green/50 hover:shadow-neon-blue/50 animate-pulse">
+                            🎮 Play Again
+                        </button>
+                        <button onclick="goHome()" 
+                            class="px-6 py-3 bg-gradient-to-r from-neon-purple to-neon-pink text-white font-bold rounded-lg
+                                   hover:from-neon-pink hover:to-neon-orange transition-all duration-300 transform hover:scale-110 
+                                   shadow-lg shadow-neon-purple/50 hover:shadow-neon-orange/50">
+                            🏠 Home
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <!-- Game Instructions -->
+        <section class="mt-6 text-center">
+            <div class="inline-flex flex-wrap justify-center gap-4 text-xs md:text-sm text-gray-400">
+                <span>🖱️ Drag & Drop: Move cards</span>
+                <span>💡 Hint: Get suggestions</span>
+                <span>🎴 Stock: Click to deal</span>
+                <span>🏠 Foundation: Build A-K by suit</span>
+            </div>
+        </section>
+
+        <!-- Mobile Instructions -->
+        <section class="mt-4 text-center md:hidden">
+            <div class="text-xs text-gray-500 space-y-1">
+                <div>📱 Tap and hold to drag cards</div>
+                <div>🔄 Double-tap stock pile to deal cards</div>
+                <div>✨ Use hint button if stuck</div>
+            </div>
+        </section>
     </main>
 
-    <!-- Win Screen -->
-    <div id="winScreen" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center hidden">
-        <div class="text-center space-y-6 p-8 bg-gradient-to-br from-neon-purple/20 to-neon-pink/20 rounded-2xl border border-neon-blue/50 backdrop-blur-lg">
-            <h2 class="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-green to-neon-blue animate-pulse">
-                🎉 You Win! 🎉
-            </h2>
-            <div class="text-xl md:text-2xl text-neon-blue space-y-2">
-                <div>Final Score: <span id="finalScore" class="text-neon-green font-bold">0</span></div>
-                <div>Moves: <span id="finalMoves" class="text-neon-purple font-bold">0</span></div>
-                <div>Time: <span id="finalTime" class="text-neon-pink font-bold">00:00</span></div>
-            </div>
-            <div class="flex flex-wrap gap-4 justify-center">
-                <button onclick="newGame(); hideWinScreen()" 
-                    class="px-8 py-4 bg-gradient-to-r from-neon-green to-neon-blue text-white font-bold rounded-lg text-lg
-                           hover:from-neon-blue hover:to-neon-purple transition-all duration-300 transform hover:scale-110 
-                           shadow-lg shadow-neon-green/50 hover:shadow-neon-blue/50 animate-pulse">
-                    🎮 Play Again
-                </button>
-                <button onclick="goHome()" 
-                    class="px-8 py-4 bg-gradient-to-r from-neon-purple to-neon-pink text-white font-bold rounded-lg text-lg
-                           hover:from-neon-pink hover:to-neon-orange transition-all duration-300 transform hover:scale-110 
-                           shadow-lg shadow-neon-purple/50 hover:shadow-neon-orange/50">
-                    🏠 Home
-                </button>
-            </div>
-        </div>
+    <!-- Ad Space Areas -->
+    <!-- Left Ad Space -->
+    <div class="fixed left-2 top-1/2 transform -translate-y-1/2 w-20 h-96 bg-black/20 backdrop-blur-sm rounded-lg border border-white/10 items-center justify-center text-gray-500 text-xs z-5 hidden lg:flex">
+        <span class="transform -rotate-90 whitespace-nowrap opacity-50">Ad Space</span>
+    </div>
+
+    <!-- Right Ad Space -->
+    <div class="fixed right-2 top-1/2 transform -translate-y-1/2 w-20 h-96 bg-black/20 backdrop-blur-sm rounded-lg border border-white/10 items-center justify-center text-gray-500 text-xs z-5 hidden lg:flex">
+        <span class="transform rotate-90 whitespace-nowrap opacity-50">Ad Space</span>
+    </div>
+
+    <!-- Bottom Ad Space -->
+    <div class="fixed bottom-2 left-1/2 transform -translate-x-1/2 w-96 h-16 bg-black/20 backdrop-blur-sm rounded-lg border border-white/10 flex items-center justify-center text-gray-500 text-xs z-5 max-w-[calc(100vw-1rem)]">
+        <span class="opacity-50">Advertisement Space</span>
     </div>
 
     <!-- Particle Effects Container -->
-    <div id="particleContainer" class="fixed inset-0 pointer-events-none z-40"></div>
+    <div id="particleContainer" class="fixed inset-0 pointer-events-none z-30"></div>
 
     <script>
         function goHome() {

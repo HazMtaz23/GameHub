@@ -11,20 +11,52 @@ body {
     user-select: none;
 }
 
-/* Card Styling */
+/* Game Board Layout - Contained Screen Design */
+.game-board {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    padding: 1rem;
+    overflow: hidden;
+}
+
+.top-row {
+    margin-bottom: 2rem;
+}
+
+.tableau {
+    min-height: 350px;
+}
+
+/* Card sizing adjustments for contained layout */
 .card {
-    width: 80px;
-    height: 112px;
-    border-radius: 12px;
+    width: 60px;
+    height: 84px;
+    border-radius: 8px;
     position: relative;
     cursor: pointer;
     transition: all 0.3s ease;
     transform-style: preserve-3d;
     box-shadow: 
-        0 4px 8px rgba(0, 0, 0, 0.3),
-        0 0 10px rgba(0, 245, 255, 0.2);
-    /* Ensure cards are visible during development */
+        0 3px 6px rgba(0, 0, 0, 0.3),
+        0 0 8px rgba(0, 245, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+@media (min-width: 768px) {
+    .card {
+        width: 70px;
+        height: 98px;
+        border-radius: 10px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .card {
+        width: 80px;
+        height: 112px;
+        border-radius: 12px;
+    }
 }
 
 .card:hover {
@@ -127,16 +159,32 @@ body {
     font-weight: bold;
 }
 
-/* Card Slot Styling */
+/* Card Slot Styling - Responsive sizing */
 .card-slot {
-    width: 80px;
-    height: 112px;
+    width: 60px;
+    height: 84px;
     border: 2px dashed rgba(0, 245, 255, 0.3);
-    border-radius: 12px;
+    border-radius: 8px;
     position: relative;
     transition: all 0.3s ease;
     background: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
+}
+
+@media (min-width: 768px) {
+    .card-slot {
+        width: 70px;
+        height: 98px;
+        border-radius: 10px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .card-slot {
+        width: 80px;
+        height: 112px;
+        border-radius: 12px;
+    }
 }
 
 .card-slot.drop-target {
@@ -707,14 +755,15 @@ body {
    =============================== */
 
 .celebration-overlay {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 2000;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
     pointer-events: none;
     overflow: hidden;
+    border-radius: inherit;
     background: radial-gradient(circle at center, rgba(0, 245, 255, 0.05) 0%, rgba(191, 0, 255, 0.03) 50%, transparent 100%);
     animation: overlayPulse 4.5s ease-in-out;
 }
@@ -740,7 +789,7 @@ body {
         0 0 45px #ff0080;
     animation: celebrationTextMain 4.5s ease-in-out;
     letter-spacing: 0.08em;
-    z-index: 2001;
+    z-index: 1001;
 }
 
 @keyframes celebrationTextMain {
@@ -780,7 +829,7 @@ body {
         0 0 10px #39ff14,
         0 0 20px #00f5ff;
     animation: celebrationTextSub 4.5s ease-in-out 0.3s backwards;
-    z-index: 2001;
+    z-index: 1001;
 }
 
 @keyframes celebrationTextSub {
@@ -903,14 +952,15 @@ body {
     }
 }
 
-/* Rainbow wave effect - more subtle */
+/* Rainbow wave effect - contained within game screen */
 .celebration-rainbow-wave {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 120px;
+    height: 80px;
     overflow: hidden;
+    border-radius: 0 0 2rem 2rem;
 }
 
 .celebration-wave-layer {

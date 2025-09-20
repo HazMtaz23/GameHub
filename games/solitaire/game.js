@@ -1308,10 +1308,16 @@ class NeonSolitaire {
     }
     
     playCelebrationAnimation() {
-        // Create main celebration overlay
+        // Create main celebration overlay within the game screen
+        const gameScreen = document.querySelector('.bg-black\\/40.backdrop-blur-xl') || document.querySelector('.game-board')?.parentElement;
+        if (!gameScreen) {
+            console.warn('Game screen container not found, falling back to body');
+            gameScreen = document.body;
+        }
+        
         const overlay = document.createElement('div');
         overlay.className = 'celebration-overlay';
-        document.body.appendChild(overlay);
+        gameScreen.appendChild(overlay);
         
         // Create spectacular celebration text with multiple layers
         this.createCelebrationText(overlay);
