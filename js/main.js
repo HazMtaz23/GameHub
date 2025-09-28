@@ -1,6 +1,69 @@
 // Enhanced JavaScript functionality for GameHub
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Firebase auth state monitoring
+    initializeFirebaseAuth();
+
+    // User interface management function
+    function updateUserInterface(user) {
+        const loginLink = document.querySelector('a[href="login.html"]');
+        const mobileLoginLink = document.querySelector('#mobile-menu a[href="login.html"]');
+        
+        if (user && loginLink) {
+            // User is logged in, show user menu instead of login button
+            const displayName = user.displayName || user.email?.split('@')[0] || 'User';
+            loginLink.innerHTML = `👤 ${displayName}`;
+            loginLink.setAttribute('href', '#');
+            loginLink.setAttribute('onclick', 'showUserMenu(event)');
+            
+            if (mobileLoginLink) {
+                mobileLoginLink.innerHTML = `👤 ${displayName}`;
+                mobileLoginLink.setAttribute('href', '#');
+                mobileLoginLink.setAttribute('onclick', 'showUserMenu(event)');
+            }
+        } else if (loginLink) {
+            // User is not logged in, show login button
+            loginLink.innerHTML = '🚀 Login';
+            loginLink.setAttribute('href', 'login.html');
+            loginLink.removeAttribute('onclick');
+            
+            if (mobileLoginLink) {
+                mobileLoginLink.innerHTML = '🚀 Login';
+                mobileLoginLink.setAttribute('href', 'login.html');
+                mobileLoginLink.removeAttribute('onclick');
+            }
+        }
+    }
+
+    // Initialize Firebase auth state listener
+    function initializeFirebaseAuth() {
+        // Check if Firebase is available (may not be on all pages)
+        if (typeof window.auth !== 'undefined') {
+            import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js')
+                .then(({ onAuthStateChanged }) => {
+                    onAuthStateChanged(window.auth, (user) => {
+                        updateUserInterface(user);
+                        if (user) {
+                            console.log('🎮 User authenticated:', user.displayName || user.email);
+                        }
+                    });
+                })
+                .catch(() => {
+                    // Firebase not available, fallback to localStorage
+                    const currentUser = localStorage.getItem('gameHubCurrentUser');
+                    if (currentUser) {
+                        updateUserInterface({ displayName: currentUser });
+                    }
+                });
+        } else {
+            // Fallback to localStorage for pages without Firebase
+            const currentUser = localStorage.getItem('gameHubCurrentUser');
+            if (currentUser) {
+                updateUserInterface({ displayName: currentUser });
+            }
+        }
+    }
+
     // Mobile menu toggle with enhanced animation
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
@@ -409,3 +472,236 @@ const GameHub = {
 
 // Export for use in other scripts
 window.GameHub = GameHub;
+
+// Global functions for user management
+window.showUserMenu = function(event) {
+    event.preventDefault();
+    
+    // Get current user from Firebase or localStorage
+    let currentUser = null;
+    let userDisplayName = 'User';
+    
+    if (typeof window.auth !== 'undefined' && window.auth.currentUser) {
+        currentUser = window.auth.currentUser;
+        userDisplayName = currentUser.displayName || currentUser.email?.split('@')[0] || 'User';
+    } else {
+        const localUser = localStorage.getItem('gameHubCurrentUser');
+        if (localUser) {
+            userDisplayName = localUser;
+            currentUser = { displayName: localUser };
+        }
+    }
+    
+    if (!currentUser) return;
+    
+    // Create user menu modal
+    const modal = document.createElement('div');
+    modal.id = 'user-menu-modal';
+    modal.className = 'fixed inset-0 z-50 overflow-y-auto';
+    modal.innerHTML = `
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity" onclick="closeUserMenu()"></div>
+            <div class="inline-block align-bottom bg-black/80 backdrop-blur-xl rounded-2xl border border-white/20 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="px-6 pt-6 pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple sm:mx-0 sm:h-10 sm:w-10">
+                            <span class="text-white text-xl">👤</span>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-medium text-white">
+                                Welcome, ${userDisplayName}!
+                            </h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-300">
+                                    Manage your GameHub account
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-black/20 px-6 py-4 space-y-3">
+                    <button onclick="viewProfile()" class="w-full flex items-center justify-center px-4 py-2 bg-gradient-to-r from-neon-blue to-neon-purple text-white rounded-lg hover:from-neon-purple hover:to-neon-pink transition-all duration-300 transform hover:scale-105">
+                        📊 View Profile
+                    </button>
+                    <button onclick="viewHighScores()" class="w-full flex items-center justify-center px-4 py-2 bg-gradient-to-r from-neon-purple to-neon-pink text-white rounded-lg hover:from-neon-pink hover:to-neon-blue transition-all duration-300 transform hover:scale-105">
+                        🏆 High Scores
+                    </button>
+                    <button onclick="logoutUser()" class="w-full flex items-center justify-center px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-300 transform hover:scale-105">
+                        🚪 Logout
+                    </button>
+                    <button onclick="closeUserMenu()" class="w-full flex items-center justify-center px-4 py-2 border border-white/20 text-white rounded-lg hover:bg-white/10 transition-all duration-300">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Add entrance animation
+    const modalContent = modal.querySelector('.inline-block');
+    modalContent.style.transform = 'scale(0.95) translateY(4px)';
+    modalContent.style.opacity = '0';
+    
+    setTimeout(() => {
+        modalContent.style.transform = 'scale(1) translateY(0)';
+        modalContent.style.opacity = '1';
+        modalContent.style.transition = 'all 0.3s ease-out';
+    }, 10);
+};
+
+window.closeUserMenu = function() {
+    const modal = document.getElementById('user-menu-modal');
+    if (modal) {
+        const modalContent = modal.querySelector('.inline-block');
+        modalContent.style.transform = 'scale(0.95) translateY(4px)';
+        modalContent.style.opacity = '0';
+        
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+    }
+};
+
+window.logoutUser = async function() {
+    closeUserMenu();
+    
+    // Try Firebase logout first
+    if (typeof window.auth !== 'undefined' && window.auth.currentUser) {
+        try {
+            const { signOut } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+            await signOut(window.auth);
+            createFloatingNotification('👋 Logged out successfully!');
+            
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+            return;
+        } catch (error) {
+            console.error('Firebase logout error:', error);
+        }
+    }
+    
+    // Fallback to localStorage logout
+    localStorage.removeItem('gameHubCurrentUser');
+    createFloatingNotification('👋 Logged out successfully!');
+    
+    setTimeout(() => {
+        location.reload();
+    }, 1000);
+};
+
+window.viewProfile = async function() {
+    let profileInfo = '';
+    
+    // Try to get Firebase user data first
+    if (typeof window.auth !== 'undefined' && window.auth.currentUser) {
+        const user = window.auth.currentUser;
+        
+        try {
+            // Try to get Firestore user data
+            if (typeof window.db !== 'undefined') {
+                const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+                const userDoc = await getDoc(doc(window.db, 'users', user.uid));
+                
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    profileInfo = `
+👤 Display Name: ${userData.displayName || 'Not set'}
+📧 Email: ${user.email || 'Not provided'}
+📅 Joined: ${userData.createdAt ? new Date(userData.createdAt.seconds * 1000).toLocaleDateString() : 'Unknown'}
+🎮 Games Played: ${userData.gamesPlayed || 0}
+🏆 Total Score: ${userData.totalScore || 0}
+� High Scores: ${Object.keys(userData.highScores || {}).length} games
+                    `;
+                } else {
+                    profileInfo = `
+👤 Display Name: ${user.displayName || 'Not set'}
+📧 Email: ${user.email || 'Not provided'}
+🎮 Account Type: Firebase User
+                    `;
+                }
+            } else {
+                profileInfo = `
+👤 Display Name: ${user.displayName || 'Not set'}
+📧 Email: ${user.email || 'Not provided'}
+🎮 Account Type: Firebase User
+                `;
+            }
+        } catch (error) {
+            console.error('Error fetching user profile:', error);
+            profileInfo = `
+👤 Display Name: ${user.displayName || 'Not set'}
+📧 Email: ${user.email || 'Not provided'}
+❌ Error loading profile data
+            `;
+        }
+    } else {
+        // Fallback to localStorage
+        const currentUser = localStorage.getItem('gameHubCurrentUser');
+        const users = JSON.parse(localStorage.getItem('gameHubUsers')) || {};
+        const userData = users[currentUser];
+        
+        if (userData) {
+            profileInfo = `
+👤 Username: ${currentUser}
+📅 Joined: ${new Date(userData.createdAt).toLocaleDateString()}
+🎮 Games Played: ${userData.gamesPlayed}
+🏆 High Scores: ${Object.keys(userData.highScores).length}
+🎯 Account Type: Local Storage
+            `;
+        } else {
+            profileInfo = '❌ Profile data not found';
+        }
+    }
+    
+    alert(profileInfo);
+};
+
+window.viewHighScores = async function() {
+    let scoresText = '� Your High Scores:\n\n';
+    let hasScores = false;
+    
+    // Try to get Firebase user data first
+    if (typeof window.auth !== 'undefined' && window.auth.currentUser) {
+        try {
+            if (typeof window.db !== 'undefined') {
+                const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+                const userDoc = await getDoc(doc(window.db, 'users', window.auth.currentUser.uid));
+                
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    const highScores = userData.highScores || {};
+                    
+                    if (Object.keys(highScores).length > 0) {
+                        for (const [game, score] of Object.entries(highScores)) {
+                            scoresText += `${game}: ${score}\n`;
+                            hasScores = true;
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching high scores:', error);
+        }
+    } else {
+        // Fallback to localStorage
+        const currentUser = localStorage.getItem('gameHubCurrentUser');
+        const users = JSON.parse(localStorage.getItem('gameHubUsers')) || {};
+        const userData = users[currentUser];
+        
+        if (userData && userData.highScores) {
+            for (const [game, score] of Object.entries(userData.highScores)) {
+                scoresText += `${game}: ${score}\n`;
+                hasScores = true;
+            }
+        }
+    }
+    
+    if (!hasScores) {
+        scoresText = '🎮 No high scores yet!\n\nStart playing games to set your records.';
+    }
+    
+    alert(scoresText);
+};

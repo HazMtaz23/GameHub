@@ -1,0 +1,309 @@
+/* Neon Flappy Bird - Additional Styles */
+
+/* Enhanced neon glow effects */
+.animate-pulse-neon {
+    animation: pulse-neon 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-neon {
+    0% { 
+        box-shadow: 0 0 5px #00f5ff, 0 0 10px #00f5ff, 0 0 15px #00f5ff;
+        text-shadow: 0 0 10px #00f5ff;
+        filter: brightness(1);
+    }
+    100% { 
+        box-shadow: 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 30px #00f5ff, 0 0 40px #00f5ff;
+        text-shadow: 0 0 20px #00f5ff, 0 0 30px #00f5ff;
+        filter: brightness(1.2);
+    }
+}
+
+/* Glowing text effects */
+.animate-glow {
+    animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    0% { 
+        text-shadow: 0 0 10px currentColor;
+        filter: brightness(1) saturate(1);
+    }
+    100% { 
+        text-shadow: 0 0 20px currentColor, 0 0 30px currentColor;
+        filter: brightness(1.3) saturate(1.5);
+    }
+}
+
+/* Floating animation */
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { 
+        transform: translateY(0px);
+        opacity: 0.8;
+    }
+    50% { 
+        transform: translateY(-10px);
+        opacity: 1;
+    }
+}
+
+/* Flash effect for game over */
+.animate-flash {
+    animation: flash 0.5s ease-in-out 3;
+}
+
+@keyframes flash {
+    0%, 100% { 
+        opacity: 1;
+        text-shadow: 0 0 20px #ff0080;
+    }
+    50% { 
+        opacity: 0.3;
+        text-shadow: 0 0 40px #ff0080, 0 0 60px #ff0080;
+    }
+}
+
+/* Particle effects */
+.animate-particle {
+    animation: particle 1s ease-out forwards;
+}
+
+@keyframes particle {
+    0% { 
+        opacity: 1;
+        transform: scale(1) translateY(0px) rotate(0deg);
+        filter: brightness(2) saturate(2);
+    }
+    100% { 
+        opacity: 0;
+        transform: scale(0.3) translateY(-50px) rotate(360deg);
+        filter: brightness(0.5) saturate(0.5);
+    }
+}
+
+/* Canvas styling */
+#gameCanvas {
+    background: radial-gradient(circle at center, rgba(0, 245, 255, 0.05) 0%, transparent 70%),
+                linear-gradient(45deg, rgba(191, 0, 255, 0.03) 0%, rgba(255, 0, 128, 0.03) 100%);
+    border: 2px solid #00f5ff;
+    box-shadow: 
+        0 0 20px rgba(0, 245, 255, 0.5),
+        inset 0 0 20px rgba(0, 245, 255, 0.1),
+        0 0 40px rgba(191, 0, 255, 0.3);
+    backdrop-filter: blur(1px);
+    position: relative;
+}
+
+#gameCanvas::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #00f5ff, #bf00ff, #ff0080, #39ff14);
+    background-size: 400% 400%;
+    animation: rainbow-border 4s ease infinite;
+    border-radius: inherit;
+    z-index: -1;
+    filter: blur(3px);
+    opacity: 0.7;
+}
+
+@keyframes rainbow-border {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Button enhancements */
+button {
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+button:hover::before {
+    left: 100%;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 245, 255, 0.3);
+}
+
+/* Screen overlays */
+#startScreen, #gameOverScreen {
+    backdrop-filter: blur(10px);
+    background: 
+        radial-gradient(circle at 30% 20%, rgba(0, 245, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 70% 80%, rgba(191, 0, 255, 0.1) 0%, transparent 50%),
+        rgba(0, 0, 0, 0.85);
+}
+
+/* HUD styling */
+#gameHUD {
+    backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 10px 15px;
+    border: 1px solid rgba(0, 245, 255, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    #gameCanvas {
+        width: 350px;
+        height: 525px;
+    }
+    
+    .text-4xl { font-size: 2rem; }
+    .text-3xl { font-size: 1.5rem; }
+    .text-2xl { font-size: 1.25rem; }
+    
+    button {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #gameCanvas {
+        width: 300px;
+        height: 450px;
+    }
+    
+    .text-4xl { font-size: 1.5rem; }
+    .text-3xl { font-size: 1.25rem; }
+}
+
+/* Background particles container */
+#particles {
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Additional visual effects */
+.neon-border {
+    border: 1px solid currentColor;
+    box-shadow: 
+        0 0 10px currentColor,
+        inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.glass-effect {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Score highlights */
+#currentScore, #finalScore, #bestScore, #displayBest {
+    text-shadow: 0 0 15px currentColor;
+    animation: score-pulse 0.3s ease;
+}
+
+@keyframes score-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Header link effects */
+header a {
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+header a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: currentColor;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 5px currentColor;
+}
+
+header a:hover::after {
+    width: 100%;
+}
+
+/* Footer controls styling */
+footer span {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid rgba(191, 0, 255, 0.3);
+    border-radius: 0.25rem;
+    background: rgba(191, 0, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+footer span:hover {
+    background: rgba(191, 0, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+/* Loading animation (for future use) */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(0, 245, 255, 0.3);
+    border-top: 3px solid #00f5ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Ensure proper stacking context */
+.relative {
+    z-index: 1;
+}
+
+/* Control button styling (matching other games) */
+.control-btn {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    color: white;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.control-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.control-btn:active {
+    transform: scale(0.95);
+}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Cowboy Zombies - GameHub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00f5ff',
+                        'neon-purple': '#bf00ff',
+                        'neon-pink': '#ff0080',
+                        'neon-green': '#39ff14',
+                        'western-gold': '#ffd700',
+                        'western-brown': '#8b4513',
+                        'zombie-green': '#228b22',
+                        'blood-red': '#dc143c',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-amber-900 to-orange-900 min-h-screen relative">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute -inset-10 opacity-20">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-western-gold to-neon-green rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute top-3/4 right-1/4 w-80 h-80 bg-gradient-to-r from-blood-red to-neon-pink rounded-full blur-3xl animate-pulse" style="animation-delay: -3s;"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="relative z-10 bg-black/30 backdrop-blur-xl border-b border-western-gold/20 p-4">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <button onclick="goHome()" class="flex items-center space-x-2 text-western-gold hover:text-neon-green transition-all duration-300 group">
+                <svg class="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                <span class="font-semibold">Back to GameHub</span>
+            </button>
+            
+            <h1 class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-western-gold via-blood-red to-zombie-green animate-pulse">
+                🤠 Pixel Cowboy Zombies 🧟
+            </h1>
+            
+            <div class="text-right">
+                <div class="text-western-gold font-bold text-lg md:text-xl">Score: <span id="score">0</span></div>
+                <div class="text-neon-green text-sm">Coins: <span id="coins">0</span></div>
+                <div class="text-blood-red text-xs">Wave: <span id="wave">1</span></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Game Section -->
+    <main class="relative z-10 p-4 flex flex-col items-center justify-center min-h-[calc(100vh-200px)] px-4 lg:px-24 pb-24">
+        <!-- Game Screen Container -->
+        <div class="bg-black/40 backdrop-blur-xl rounded-2xl border border-western-gold/20 p-4 md:p-6 shadow-2xl relative max-w-6xl w-full">
+            <!-- Game Canvas -->
+            <canvas id="gameCanvas" width="800" height="600" 
+                class="border-2 border-western-gold/50 rounded-lg bg-gradient-to-br from-western-brown/30 to-black/40 backdrop-blur-lg shadow-2xl shadow-blood-red/30 w-full h-auto mx-auto block"></canvas>
+            
+            <!-- Game HUD Overlay -->
+            <div id="gameHUD" class="absolute top-8 left-8 right-8 flex justify-between pointer-events-none">
+                <!-- Player Stats -->
+                <div class="bg-black/60 backdrop-blur-md rounded-lg p-3 border border-western-gold/30">
+                    <div class="text-western-gold font-bold text-sm">Health</div>
+                    <div class="flex space-x-1 mt-1">
+                        <div id="health1" class="w-4 h-4 bg-blood-red rounded-full"></div>
+                        <div id="health2" class="w-4 h-4 bg-blood-red rounded-full"></div>
+                        <div id="health3" class="w-4 h-4 bg-blood-red rounded-full"></div>
+                    </div>
+                    <div class="text-neon-green font-bold text-xs mt-2">Ammo: <span id="ammo">12</span></div>
+                </div>
+                
+                <!-- Weapon Info -->
+                <div class="bg-black/60 backdrop-blur-md rounded-lg p-3 border border-western-gold/30">
+                    <div class="text-western-gold font-bold text-sm">Weapon</div>
+                    <div class="text-white text-xs mt-1" id="weaponName">Six Shooter</div>
+                    <div class="text-zombie-green text-xs">Dmg: <span id="weaponDamage">25</span></div>
+                </div>
+            </div>
+
+            <!-- Game Over Screen -->
+            <div id="gameOverScreen" class="absolute inset-0 bg-black/80 backdrop-blur-md rounded-lg flex flex-col items-center justify-center hidden">
+                <div class="text-center space-y-6 animate-pulse px-4">
+                    <h2 class="text-2xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blood-red to-western-gold">
+                        <span id="gameOverTitle">The Town Has Fallen! 💀</span>
+                    </h2>
+                    <div class="text-xl md:text-2xl text-western-gold">Final Score: <span id="finalScore">0</span></div>
+                    <div class="text-lg text-neon-green">Zombies Killed: <span id="zombiesKilled">0</span></div>
+                    <div class="text-lg text-zombie-green">Waves Survived: <span id="wavesSurvived">0</span></div>
+                    <div id="newHighScore" class="text-neon-pink text-lg hidden">🎉 New High Score! 🎉</div>
+                    <div class="space-y-3">
+                        <button onclick="restartGame()" 
+                            class="px-6 md:px-8 py-3 bg-gradient-to-r from-western-gold to-blood-red text-white font-bold rounded-lg 
+                                   hover:from-blood-red hover:to-western-gold transition-all duration-300 transform hover:scale-110 
+                                   shadow-lg shadow-western-gold/50 hover:shadow-blood-red/50 block mx-auto">
+                            🤠 Defend Again
+                        </button>
+                        <button onclick="showUpgradeShop()" 
+                            class="px-4 md:px-6 py-2 bg-gradient-to-r from-zombie-green to-neon-green text-white font-bold rounded-lg 
+                                   hover:from-neon-green hover:to-zombie-green transition-all duration-300 transform hover:scale-105 
+                                   shadow-lg shadow-zombie-green/50">
+                            💰 Upgrade Shop
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Start Screen -->
+            <div id="startScreen" class="absolute inset-0 bg-black/80 backdrop-blur-md rounded-lg flex flex-col items-center justify-center">
+                <div class="text-center space-y-6 px-4">
+                    <h2 class="text-3xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-western-gold to-blood-red animate-pulse">
+                        🤠 Pixel Cowboy Zombies 🧟
+                    </h2>
+                    <div class="text-sm md:text-lg text-gray-300 space-y-2">
+                        <p class="text-western-gold">The undead have taken over the frontier town!</p>
+                        <p>Use WASD to move and mouse to aim & shoot</p>
+                        <p class="text-blood-red">Kill zombies to earn coins and survive the waves!</p>
+                        <p class="text-neon-green text-xs md:text-sm">✨ Upgrade your weapons between waves! ✨</p>
+                    </div>
+                    <button onclick="startGame()" 
+                        class="px-8 md:px-12 py-4 bg-gradient-to-r from-western-gold to-blood-red text-white font-bold rounded-lg text-lg md:text-xl
+                               hover:from-blood-red hover:to-zombie-green transition-all duration-300 transform hover:scale-110 
+                               shadow-lg shadow-western-gold/50 hover:shadow-blood-red/50 animate-pulse">
+                        ✨ Start Shooting ✨
+                    </button>
+                </div>
+            </div>
+
+            <!-- Upgrade Shop -->
+            <div id="upgradeShop" class="absolute inset-0 bg-black/90 backdrop-blur-md rounded-lg flex flex-col items-center justify-center hidden">
+                <div class="text-center space-y-6 px-4 max-w-md">
+                    <h2 class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-western-gold to-neon-green">
+                        🏪 Weapon Shop
+                    </h2>
+                    <div class="text-neon-green text-lg">Your Coins: <span id="shopCoins">0</span></div>
+                    
+                    <div class="space-y-4">
+                        <!-- Weapon Upgrades -->
+                        <div class="bg-western-brown/20 p-4 rounded-lg border border-western-gold/30">
+                            <h3 class="text-western-gold font-bold">🔫 Double Barrel (50 coins)</h3>
+                            <p class="text-sm text-gray-300">More damage, slower reload</p>
+                            <button id="buyDoubleBarel" onclick="buyWeapon('doubleBarrel', 50)" 
+                                class="mt-2 px-4 py-2 bg-gradient-to-r from-western-gold to-blood-red text-white rounded hover:scale-105 transition-all duration-300">
+                                Buy
+                            </button>
+                        </div>
+                        
+                        <div class="bg-western-brown/20 p-4 rounded-lg border border-western-gold/30">
+                            <h3 class="text-western-gold font-bold">💀 Zombie Blaster (100 coins)</h3>
+                            <p class="text-sm text-gray-300">High damage, good range</p>
+                            <button id="buyZombieBlaster" onclick="buyWeapon('zombieBlaster', 100)" 
+                                class="mt-2 px-4 py-2 bg-gradient-to-r from-zombie-green to-neon-green text-white rounded hover:scale-105 transition-all duration-300">
+                                Buy
+                            </button>
+                        </div>
+                        
+                        <div class="bg-western-brown/20 p-4 rounded-lg border border-western-gold/30">
+                            <h3 class="text-western-gold font-bold">⚡ Neon Rifle (200 coins)</h3>
+                            <p class="text-sm text-gray-300">Maximum damage and range</p>
+                            <button id="buyNeonRifle" onclick="buyWeapon('neonRifle', 200)" 
+                                class="mt-2 px-4 py-2 bg-gradient-to-r from-neon-blue to-neon-purple text-white rounded hover:scale-105 transition-all duration-300">
+                                Buy
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button onclick="closeUpgradeShop()" 
+                        class="px-6 py-3 bg-gradient-to-r from-western-brown to-western-gold text-white font-bold rounded-lg 
+                               hover:from-western-gold hover:to-western-brown transition-all duration-300 transform hover:scale-105">
+                        🚪 Back to Town
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls Info -->
+        <section class="mt-4 text-center">
+            <div class="inline-flex flex-wrap justify-center gap-4 text-xs md:text-sm text-gray-400">
+                <span>🏃 WASD: Move</span>
+                <span>🎯 MOUSE: Aim & Shoot</span>
+                <span>🔄 R: Reload</span>
+                <span>🏪 E: Shop (when available)</span>
+            </div>
+        </section>
+
+        <!-- Mobile Controls -->
+        <section id="mobileControls" class="mt-4 grid grid-cols-3 gap-4 md:hidden max-w-md">
+            <div class="flex flex-col space-y-2">
+                <button id="moveUpBtn" class="control-btn bg-western-gold/20 border-western-gold/50 hover:border-western-gold" aria-label="Move Up">⬆️</button>
+                <div class="flex space-x-2">
+                    <button id="moveLeftBtn" class="control-btn bg-western-gold/20 border-western-gold/50 hover:border-western-gold" aria-label="Move Left">⬅️</button>
+                    <button id="moveRightBtn" class="control-btn bg-western-gold/20 border-western-gold/50 hover:border-western-gold" aria-label="Move Right">➡️</button>
+                </div>
+                <button id="moveDownBtn" class="control-btn bg-western-gold/20 border-western-gold/50 hover:border-western-gold" aria-label="Move Down">⬇️</button>
+            </div>
+            
+            <div class="flex items-center justify-center">
+                <button id="shootBtn" class="control-btn bg-blood-red/20 border-blood-red/50 hover:border-blood-red text-2xl px-6 py-4" aria-label="Shoot">🔫</button>
+            </div>
+            
+            <div class="flex flex-col space-y-2 justify-center">
+                <button id="reloadBtn" class="control-btn bg-zombie-green/20 border-zombie-green/50 hover:border-zombie-green" aria-label="Reload">🔄</button>
+                <button id="shopBtn" class="control-btn bg-neon-green/20 border-neon-green/50 hover:border-neon-green" aria-label="Shop">🏪</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Ad Space Areas -->
+    <!-- Left Ad Space -->
+    <div class="fixed left-2 top-1/2 transform -translate-y-1/2 w-20 h-96 bg-black/20 backdrop-blur-sm rounded-lg border border-western-gold/10 items-center justify-center text-gray-500 text-xs z-5 hidden lg:flex">
+        <span class="transform -rotate-90 whitespace-nowrap opacity-50">Ad Space</span>
+    </div>
+
+    <!-- Right Ad Space -->
+    <div class="fixed right-2 top-1/2 transform -translate-y-1/2 w-20 h-96 bg-black/20 backdrop-blur-sm rounded-lg border border-western-gold/10 items-center justify-center text-gray-500 text-xs z-5 hidden lg:flex">
+        <span class="transform rotate-90 whitespace-nowrap opacity-50">Ad Space</span>
+    </div>
+
+    <!-- Bottom Ad Space -->
+    <div class="fixed bottom-2 left-1/2 transform -translate-x-1/2 w-96 h-16 bg-black/20 backdrop-blur-sm rounded-lg border border-western-gold/10 flex items-center justify-center text-gray-500 text-xs z-5 max-w-[calc(100vw-1rem)]">
+        <span class="opacity-50">Advertisement Space</span>
+    </div>
+
+    <!-- Particle Effects Container -->
+    <div id="particleContainer" class="fixed inset-0 pointer-events-none z-20"></div>
+
+    <script>
+        function goHome() {
+            window.location.href = '../../index.html';
+        }
+    </script>
+    <script src="game.js"></script>
+</body>
+</html>

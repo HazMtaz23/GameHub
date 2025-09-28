@@ -1,0 +1,449 @@
+/* Neon Sudoku - Styles */
+
+/* Sudoku Grid Layout */
+.sudoku-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+    gap: 1px;
+    background: rgba(0, 245, 255, 0.3);
+    padding: 8px;
+    width: 450px;
+    height: 450px;
+    max-width: 90vw;
+    max-height: 90vw;
+    aspect-ratio: 1;
+    margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+    .sudoku-grid {
+        width: 350px;
+        height: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sudoku-grid {
+        width: 300px;
+        height: 300px;
+    }
+}
+
+/* Sudoku Cell Styles */
+.sudoku-cell {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    backdrop-filter: blur(5px);
+}
+
+@media (max-width: 640px) {
+    .sudoku-cell {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .sudoku-cell {
+        font-size: 1rem;
+    }
+}
+
+/* 3x3 Box Borders */
+.sudoku-cell.border-top-thick {
+    border-top: 3px solid #00f5ff;
+}
+
+.sudoku-cell.border-left-thick {
+    border-left: 3px solid #00f5ff;
+}
+
+/* Cell States */
+.sudoku-cell.selected {
+    background: rgba(0, 245, 255, 0.4);
+    border: 2px solid #00f5ff;
+    box-shadow: 
+        0 0 15px rgba(0, 245, 255, 0.5),
+        inset 0 0 15px rgba(0, 245, 255, 0.2);
+    transform: scale(1.05);
+    z-index: 2;
+}
+
+.sudoku-cell.highlighted {
+    background: rgba(0, 245, 255, 0.15);
+    border-color: rgba(0, 245, 255, 0.4);
+}
+
+.sudoku-cell.initial {
+    background: rgba(57, 255, 20, 0.2);
+    color: #39ff14;
+    font-weight: 900;
+    text-shadow: 0 0 10px #39ff14;
+    border-color: rgba(57, 255, 20, 0.3);
+}
+
+.sudoku-cell.hint {
+    background: rgba(191, 0, 255, 0.3);
+    color: #bf00ff;
+    text-shadow: 0 0 15px #bf00ff;
+    animation: hint-glow 1s ease-in-out;
+}
+
+.sudoku-cell.mistake {
+    background: rgba(255, 0, 128, 0.4);
+    color: #ff0080;
+    text-shadow: 0 0 15px #ff0080;
+    animation: mistake-flash 0.5s ease-in-out 2;
+}
+
+.sudoku-cell:hover:not(.initial) {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.02);
+}
+
+/* Animations */
+@keyframes hint-glow {
+    0% { 
+        background: rgba(191, 0, 255, 0.6);
+        transform: scale(1.1);
+    }
+    100% { 
+        background: rgba(191, 0, 255, 0.3);
+        transform: scale(1);
+    }
+}
+
+@keyframes mistake-flash {
+    0%, 100% { 
+        background: rgba(255, 0, 128, 0.4);
+        transform: scale(1);
+    }
+    50% { 
+        background: rgba(255, 0, 128, 0.8);
+        transform: scale(1.05);
+    }
+}
+
+/* Number Input Buttons */
+.number-btn, .action-btn {
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 245, 255, 0.2);
+    border: 2px solid rgba(0, 245, 255, 0.4);
+    border-radius: 8px;
+    color: #00f5ff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 0 0 10px currentColor;
+}
+
+.number-btn:hover, .action-btn:hover {
+    background: rgba(0, 245, 255, 0.4);
+    border-color: #00f5ff;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(0, 245, 255, 0.5);
+}
+
+.action-btn {
+    background: rgba(255, 0, 128, 0.2);
+    border-color: rgba(255, 0, 128, 0.4);
+    color: #ff0080;
+}
+
+.action-btn:hover {
+    background: rgba(255, 0, 128, 0.4);
+    border-color: #ff0080;
+    box-shadow: 0 0 15px rgba(255, 0, 128, 0.5);
+}
+
+@media (max-width: 640px) {
+    .number-btn, .action-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+}
+
+/* Difficulty Buttons */
+.difficulty-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    text-shadow: 0 0 10px currentColor;
+}
+
+.difficulty-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.difficulty-btn.active {
+    border-color: #ffffff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+/* Control Button Styling */
+.control-btn {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    color: white;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.control-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.control-btn:active {
+    transform: scale(0.95);
+}
+
+/* Enhanced Button Hover Effects */
+button {
+    position: relative;
+    overflow: hidden;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+button:hover::before {
+    left: 100%;
+}
+
+/* Glow Effects */
+.neon-glow {
+    text-shadow: 
+        0 0 5px currentColor,
+        0 0 10px currentColor,
+        0 0 15px currentColor,
+        0 0 20px currentColor;
+}
+
+.pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+    0% {
+        text-shadow: 0 0 10px currentColor;
+        filter: brightness(1);
+    }
+    100% {
+        text-shadow: 
+            0 0 20px currentColor,
+            0 0 30px currentColor;
+        filter: brightness(1.3);
+    }
+}
+
+/* Grid Container Enhancements */
+.bg-black\/40.backdrop-blur-xl {
+    position: relative;
+}
+
+.bg-black\/40.backdrop-blur-xl::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+        rgba(0, 245, 255, 0.3),
+        rgba(191, 0, 255, 0.3),
+        rgba(255, 0, 128, 0.3),
+        rgba(57, 255, 20, 0.3));
+    background-size: 400% 400%;
+    animation: rainbow-border 4s ease infinite;
+    border-radius: inherit;
+    z-index: -1;
+    filter: blur(2px);
+}
+
+@keyframes rainbow-border {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 640px) {
+    .text-4xl { font-size: 2rem; }
+    .text-3xl { font-size: 1.5rem; }
+    .text-2xl { font-size: 1.25rem; }
+    .text-xl { font-size: 1.125rem; }
+    
+    .space-y-6 > * + * {
+        margin-top: 1rem;
+    }
+    
+    .space-y-4 > * + * {
+        margin-top: 0.75rem;
+    }
+}
+
+/* Loading and Transition Effects */
+.fade-in {
+    animation: fade-in 0.5s ease-in-out;
+}
+
+@keyframes fade-in {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.slide-up {
+    animation: slide-up 0.6s ease-out;
+}
+
+@keyframes slide-up {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Particle Effects */
+.particle {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 50%;
+    animation: particle-float 2s ease-out forwards;
+}
+
+@keyframes particle-float {
+    0% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.5) translateY(-50px);
+    }
+}
+
+/* Success/Error Visual Feedback */
+.success-glow {
+    animation: success-glow 1s ease-in-out;
+}
+
+@keyframes success-glow {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.5) saturate(1.5); }
+}
+
+.error-shake {
+    animation: error-shake 0.5s ease-in-out;
+}
+
+@keyframes error-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Responsive Grid Adjustments */
+@media (max-width: 480px) {
+    .sudoku-grid {
+        gap: 0;
+        padding: 4px;
+    }
+    
+    .number-btn, .action-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 0.875rem;
+    }
+    
+    .grid-cols-5 {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 0.25rem;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .sudoku-cell {
+        border-width: 2px;
+    }
+    
+    .sudoku-cell.selected {
+        border-width: 3px;
+    }
+    
+    .sudoku-cell.initial {
+        background: rgba(57, 255, 20, 0.4);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .sudoku-cell,
+    .number-btn,
+    .action-btn,
+    button {
+        transition: none;
+        animation: none;
+    }
+    
+    .sudoku-cell:hover {
+        transform: none;
+    }
+}
+
+/* Focus states for accessibility */
+.sudoku-cell:focus,
+.number-btn:focus,
+.action-btn:focus,
+button:focus {
+    outline: 2px solid #00f5ff;
+    outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+    .sudoku-grid {
+        background: white;
+        border: 2px solid black;
+    }
+    
+    .sudoku-cell {
+        background: white;
+        color: black;
+        border: 1px solid black;
+    }
+    
+    .sudoku-cell.initial {
+        background: #f0f0f0;
+        font-weight: bold;
+    }
+}

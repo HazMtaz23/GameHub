@@ -61,6 +61,18 @@ html {
     }
 }
 
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-3px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(3px);
+    }
+}
+
 /* Text shadow glow effect */
 .text-shadow-glow {
     text-shadow: 0 0 20px rgba(99, 102, 241, 0.8),
@@ -166,6 +178,10 @@ nav a:hover {
 .shimmer {
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
     background-size: 468px 100%;
+    animation: shimmer 2s infinite;
+}
+
+.animate-shimmer {
     animation: shimmer 2s infinite;
 }
 

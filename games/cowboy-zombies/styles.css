@@ -1,0 +1,557 @@
+/* Pixel Cowboy Zombies Game Styles */
+
+/* Western/Zombie color palette */
+:root {
+    --western-gold: #ffd700;
+    --blood-red: #dc143c;
+    --zombie-green: #228b22;
+    --dusty-brown: #8b7355;
+    --wood-brown: #8b4513;
+    --dark-brown: #654321;
+}
+
+/* Game-specific styling */
+.cowboy-theme {
+    background: linear-gradient(135deg, var(--dusty-brown) 0%, var(--dark-brown) 100%);
+}
+
+.western-border {
+    border: 3px solid var(--western-gold);
+    border-image: linear-gradient(45deg, var(--western-gold), #ffff99) 1;
+}
+
+.zombie-glow {
+    box-shadow: 0 0 20px rgba(34, 139, 34, 0.5);
+}
+
+.blood-splatter {
+    background: radial-gradient(circle, rgba(220, 20, 60, 0.8) 0%, rgba(220, 20, 60, 0.3) 50%, transparent 100%);
+}
+
+/* Game canvas styling */
+#gameCanvas {
+    border: 4px solid var(--western-gold);
+    border-radius: 8px;
+    box-shadow: 
+        0 0 20px rgba(255, 215, 0, 0.3),
+        inset 0 0 0 2px var(--dark-brown);
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+/* HUD styling */
+.game-hud {
+    background: linear-gradient(180deg, rgba(139, 69, 19, 0.95) 0%, rgba(101, 67, 33, 0.95) 100%);
+    border: 2px solid var(--western-gold);
+    border-radius: 8px;
+    box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        inset 0 0 0 1px rgba(255, 215, 0, 0.5);
+}
+
+/* Weapon display */
+.weapon-display {
+    background: linear-gradient(135deg, var(--wood-brown) 0%, var(--dark-brown) 100%);
+    border: 2px solid var(--western-gold);
+    border-radius: 4px;
+    padding: 8px;
+}
+
+.weapon-name {
+    color: var(--western-gold);
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.weapon-stats {
+    color: #fff;
+    font-size: 12px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+}
+
+/* Health hearts */
+.health-heart {
+    width: 16px;
+    height: 16px;
+    background: var(--blood-red);
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 0 8px rgba(220, 20, 60, 0.6);
+}
+
+.health-heart.empty {
+    background: #444;
+    box-shadow: none;
+}
+
+.health-heart::before,
+.health-heart::after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: inherit;
+    border-radius: 50%;
+    position: absolute;
+    top: -3px;
+}
+
+.health-heart::before {
+    left: -4px;
+}
+
+.health-heart::after {
+    right: -4px;
+}
+
+/* Ammo display */
+.ammo-display {
+    background: linear-gradient(135deg, var(--dark-brown) 0%, #2d1810 100%);
+    border: 2px solid var(--western-gold);
+    border-radius: 4px;
+    color: var(--western-gold);
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    text-align: center;
+    padding: 4px 8px;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Mobile controls */
+.mobile-controls {
+    background: rgba(139, 69, 19, 0.9);
+    border: 2px solid var(--western-gold);
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.control-btn {
+    background: linear-gradient(135deg, var(--wood-brown) 0%, var(--dark-brown) 100%);
+    border: 2px solid var(--western-gold);
+    border-radius: 6px;
+    color: var(--western-gold);
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    box-shadow: 
+        0 4px 0 var(--dark-brown),
+        0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.1s ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.control-btn:active {
+    transform: translateY(2px);
+    box-shadow: 
+        0 2px 0 var(--dark-brown),
+        0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.control-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Movement controls */
+.move-controls {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+.move-controls .control-btn {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.move-controls .control-btn:nth-child(1) { top: 0; left: 42px; } /* Up */
+.move-controls .control-btn:nth-child(2) { bottom: 0; left: 42px; } /* Down */
+.move-controls .control-btn:nth-child(3) { top: 42px; left: 0; } /* Left */
+.move-controls .control-btn:nth-child(4) { top: 42px; right: 0; } /* Right */
+
+/* Action controls */
+.action-controls .control-btn {
+    min-width: 70px;
+    height: 40px;
+    font-size: 14px;
+    margin: 4px;
+}
+
+/* Upgrade shop styling */
+.upgrade-shop {
+    background: 
+        radial-gradient(circle at top left, rgba(139, 69, 19, 0.95) 0%, rgba(101, 67, 33, 0.95) 100%),
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><rect width="20" height="20" fill="%23654321"/><rect width="1" height="1" fill="%23ffffff" opacity="0.1" x="5" y="5"/><rect width="1" height="1" fill="%23ffffff" opacity="0.1" x="15" y="15"/></svg>');
+    border: 4px solid var(--western-gold);
+    border-radius: 12px;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.6),
+        inset 0 0 0 2px rgba(255, 215, 0, 0.3);
+}
+
+.shop-header {
+    background: linear-gradient(135deg, var(--western-gold) 0%, #ffff99 100%);
+    color: var(--dark-brown);
+    font-weight: bold;
+    text-align: center;
+    padding: 12px;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 2px solid var(--dark-brown);
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.weapon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    padding: 20px;
+}
+
+.weapon-card {
+    background: linear-gradient(135deg, var(--wood-brown) 0%, var(--dark-brown) 100%);
+    border: 2px solid var(--western-gold);
+    border-radius: 8px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.weapon-card::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, var(--western-gold), #ffff99, var(--western-gold));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.weapon-card:hover::before {
+    opacity: 0.3;
+}
+
+.weapon-card.owned {
+    border-color: var(--zombie-green);
+    box-shadow: 0 0 12px rgba(34, 139, 34, 0.4);
+}
+
+.weapon-card.owned::before {
+    background: linear-gradient(45deg, var(--zombie-green), #32cd32, var(--zombie-green));
+}
+
+.weapon-info h3 {
+    color: var(--western-gold);
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 0 8px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.weapon-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 12px 0;
+    color: #fff;
+    font-size: 14px;
+}
+
+.weapon-stat {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border-left: 3px solid var(--western-gold);
+}
+
+.weapon-stat span {
+    color: var(--western-gold);
+    font-weight: bold;
+}
+
+.buy-btn {
+    background: linear-gradient(135deg, var(--blood-red) 0%, #b91c3c 100%);
+    border: 2px solid var(--western-gold);
+    border-radius: 6px;
+    color: var(--western-gold);
+    font-weight: bold;
+    padding: 8px 16px;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    box-shadow: 
+        0 4px 0 #8b0000,
+        0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.buy-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #ff1744 0%, #d32f2f 100%);
+    transform: translateY(-1px);
+    box-shadow: 
+        0 5px 0 #8b0000,
+        0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.buy-btn:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 
+        0 2px 0 #8b0000,
+        0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.buy-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: 
+        0 2px 0 #444,
+        0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.buy-btn.owned {
+    background: linear-gradient(135deg, var(--zombie-green) 0%, #1e7e34 100%);
+    box-shadow: 
+        0 4px 0 #0d4b14,
+        0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Close shop button */
+.close-shop-btn {
+    background: linear-gradient(135deg, #666 0%, #444 100%);
+    border: 2px solid var(--western-gold);
+    border-radius: 50%;
+    color: var(--western-gold);
+    font-size: 18px;
+    font-weight: bold;
+    width: 36px;
+    height: 36px;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-shop-btn:hover {
+    background: linear-gradient(135deg, #888 0%, #666 100%);
+    transform: scale(1.1);
+}
+
+/* Screen overlays */
+.screen-overlay {
+    background: 
+        radial-gradient(circle at center, rgba(139, 69, 19, 0.95) 0%, rgba(45, 24, 16, 0.98) 100%),
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><rect width="40" height="40" fill="%23654321"/><circle cx="20" cy="20" r="1" fill="%23ffffff" opacity="0.1"/></svg>');
+    border: 4px solid var(--western-gold);
+    border-radius: 12px;
+    color: var(--western-gold);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.8),
+        inset 0 0 0 2px rgba(255, 215, 0, 0.3);
+}
+
+.screen-title {
+    color: var(--western-gold);
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 
+        2px 2px 0px var(--dark-brown),
+        4px 4px 8px rgba(0, 0, 0, 0.8);
+    margin-bottom: 1rem;
+}
+
+.screen-subtitle {
+    color: #fff;
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Game stats display */
+.game-stats {
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--western-gold);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 20px 0;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 8px 0;
+    color: #fff;
+    font-size: 1.1rem;
+}
+
+.stat-label {
+    color: var(--western-gold);
+    font-weight: bold;
+}
+
+.stat-value {
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+/* Action buttons */
+.action-btn {
+    background: linear-gradient(135deg, var(--blood-red) 0%, #b91c3c 100%);
+    border: 3px solid var(--western-gold);
+    border-radius: 8px;
+    color: var(--western-gold);
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 12px 24px;
+    margin: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    box-shadow: 
+        0 6px 0 #8b0000,
+        0 6px 12px rgba(0, 0, 0, 0.4);
+    min-width: 150px;
+}
+
+.action-btn:hover {
+    background: linear-gradient(135deg, #ff1744 0%, #d32f2f 100%);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 0 #8b0000,
+        0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+.action-btn:active {
+    transform: translateY(3px);
+    box-shadow: 
+        0 3px 0 #8b0000,
+        0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.action-btn.secondary {
+    background: linear-gradient(135deg, var(--wood-brown) 0%, var(--dark-brown) 100%);
+    box-shadow: 
+        0 6px 0 var(--dark-brown),
+        0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.action-btn.secondary:hover {
+    background: linear-gradient(135deg, #a0522d 0%, var(--wood-brown) 100%);
+    box-shadow: 
+        0 8px 0 var(--dark-brown),
+        0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+/* High score indicator */
+.new-high-score {
+    background: linear-gradient(135deg, var(--western-gold) 0%, #ffff99 100%);
+    color: var(--dark-brown);
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-align: center;
+    animation: pulse 2s infinite;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+    border: 2px solid var(--dark-brown);
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.9; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .screen-title {
+        font-size: 2rem;
+    }
+    
+    .weapon-grid {
+        grid-template-columns: 1fr;
+        padding: 16px;
+        gap: 12px;
+    }
+    
+    .weapon-card {
+        padding: 12px;
+    }
+    
+    .action-btn {
+        font-size: 1rem;
+        padding: 10px 20px;
+        margin: 6px;
+        min-width: 120px;
+    }
+    
+    .game-stats {
+        padding: 12px;
+        margin: 16px 0;
+    }
+    
+    .stat-row {
+        font-size: 1rem;
+    }
+}
+
+/* Loading and transition effects */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-up {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Pixel art styling */
+* {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+/* Custom scrollbar for shop */
+.upgrade-shop::-webkit-scrollbar {
+    width: 8px;
+}
+
+.upgrade-shop::-webkit-scrollbar-track {
+    background: var(--dark-brown);
+    border-radius: 4px;
+}
+
+.upgrade-shop::-webkit-scrollbar-thumb {
+    background: var(--western-gold);
+    border-radius: 4px;
+}
+
+.upgrade-shop::-webkit-scrollbar-thumb:hover {
+    background: #ffff99;
+}
